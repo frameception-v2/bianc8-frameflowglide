@@ -17,19 +17,52 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 
-function ExampleCard() {
+const GALLERY_IMAGES = [
+  "https://i.imgur.com/abc123.jpg", // Replace with actual image URLs from Bianc8's posts
+  "https://i.imgur.com/def456.jpg",
+  "https://i.imgur.com/ghi789.jpg",
+  "https://i.imgur.com/jkl012.jpg",
+  "https://i.imgur.com/mno345.jpg"
+];
+
+function GalleryCard() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % GALLERY_IMAGES.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prev) => 
+      prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1
+    );
+  };
+
   return (
     <Card className="border-neutral-200 bg-white">
       <CardHeader>
-        <CardTitle className="text-neutral-900">Welcome to the Frame Template</CardTitle>
+        <CardTitle className="text-neutral-900">Bianc8's Gallery</CardTitle>
         <CardDescription className="text-neutral-600">
-          This is an example card that you can customize or remove
+          Recent images and videos
         </CardDescription>
       </CardHeader>
-      <CardContent className="text-neutral-800">
-        <p>
-          Your frame content goes here. The text is intentionally dark to ensure good readability.
-        </p>
+      <CardContent className="flex flex-col items-center gap-4">
+        <img 
+          src={GALLERY_IMAGES[currentIndex]} 
+          alt={`Gallery item ${currentIndex + 1}`}
+          className="w-full h-48 object-cover rounded-lg"
+        />
+        <div className="flex gap-2">
+          <PurpleButton onClick={handlePrevious}>
+            Previous
+          </PurpleButton>
+          <PurpleButton onClick={handleNext}>
+            Next
+          </PurpleButton>
+        </div>
+        <div className="text-neutral-600 text-sm">
+          {currentIndex + 1} / {GALLERY_IMAGES.length}
+        </div>
       </CardContent>
     </Card>
   );
@@ -137,7 +170,7 @@ export default function Frame(
     >
       <div className="w-[300px] mx-auto py-2 px-2">
         <h1 className="text-2xl font-bold text-center mb-4 text-neutral-900">{title}</h1>
-        <ExampleCard />
+        <GalleryCard />
       </div>
     </div>
   );
